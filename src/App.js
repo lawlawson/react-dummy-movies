@@ -14,6 +14,9 @@ function App() {
 
     try {
       const response = await fetch('https://swapi.dev/api/films');
+      if (!response.ok) {
+        throw new Error('Something went wrong here when fetching movies!');
+      }
       const data = await response.json();
 
       const transformedMovies = data.results.map((movieData) => {
@@ -26,7 +29,10 @@ function App() {
       });
       setMovies(transformedMovies);
       setIsLoading(false);
-    } catch (error) {}
+    } catch (error) {
+      setError(error.message);
+    }
+    setIsLoading(false);
   }
 
   return (
@@ -36,7 +42,10 @@ function App() {
       </section>
       <section>
         {!isLoading && movies.length > 0 && <MoviesList movies={movies} />}
-        {!isLoading && movies.length === 0 && <p>No movies available</p>}
+        {!isLoading && movies.length === 0 && !error && (
+          <p>No movies available</p>
+        )}
+        {!isLoading && error && <p>{error}</p>}
         {isLoading && <p>Loading...</p>}
       </section>
     </React.Fragment>
