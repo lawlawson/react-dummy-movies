@@ -35,6 +35,12 @@ function App() {
     setIsLoading(false);
   }
 
+  let content = <p>Found no movies.</p>;
+
+  if (isLoading) {
+    content = <p>Loading...</p>;
+  }
+
   return (
     <React.Fragment>
       <section>
